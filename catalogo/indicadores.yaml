@@ -1,0 +1,285 @@
+# Catálogo de indicadores: fonte única de verdade do projeto.
+# Técnico: id, fonte, cod_fonte, area, unidade, periodicidade.
+# Estudo:  o_que_e, por_que_importa, como_ler, se_relaciona_com (ids de outros indicadores).
+# Códigos SGS conferidos em 26/10/2026 (nome no portal de dados abertos do BCB ou valor recente coerente).
+
+inicio_padrao: 2000-01-01
+
+areas:
+  monetaria: Política monetária
+  inflacao: Inflação
+  cambio_externo: Câmbio e setor externo
+  atividade: Atividade econômica
+  emprego: Emprego e renda
+  fiscal: Contas públicas
+  credito: Crédito
+
+indicadores:
+
+  # ---------------- Política monetária ----------------
+  - id: selic_meta
+    nome: Selic meta
+    fonte: sgs
+    cod_fonte: 432
+    area: monetaria
+    unidade: "% a.a."
+    periodicidade: diaria
+    o_que_e: >
+      A taxa básica de juros da economia, decidida pelo Copom (Comitê de Política
+      Monetária do Banco Central) em 8 reuniões por ano, mais ou menos a cada 45 dias.
+    por_que_importa: >
+      É o principal instrumento do BC para controlar a inflação. Ela serve de piso para
+      os juros de empréstimos, financiamentos e aplicações em renda fixa.
+    como_ler: >
+      Subir = "apertar": o crédito fica mais caro, o consumo esfria e a inflação tende a
+      cair, com uma defasagem de 6 a 18 meses. Cair = "afrouxar", para estimular a
+      economia. A série já mostra a taxa vigente até a próxima reunião.
+    se_relaciona_com: [ipca, selic_efetiva, credito_saldo, dolar]
+
+  - id: selic_efetiva
+    nome: Selic efetiva (anualizada)
+    fonte: sgs
+    cod_fonte: 1178
+    area: monetaria
+    unidade: "% a.a."
+    periodicidade: diaria
+    o_que_e: >
+      A taxa média que os bancos realmente praticam nos empréstimos de um dia entre si,
+      com títulos públicos como garantia.
+    por_que_importa: >
+      Mostra se o BC está conseguindo manter os juros do mercado colados na meta. É a
+      taxa que de fato rende no Tesouro Selic e serve de base para o CDI.
+    como_ler: >
+      Fica normalmente cerca de 0,10 ponto abaixo da meta. Se essa distância aumentar
+      muito, há algum problema de liquidez no sistema.
+    se_relaciona_com: [selic_meta]
+
+  # ---------------- Inflação ----------------
+  - id: ipca
+    nome: IPCA (variação mensal)
+    fonte: sgs
+    cod_fonte: 433
+    fonte_original: IBGE
+    area: inflacao
+    unidade: "% no mês"
+    periodicidade: mensal
+    o_que_e: >
+      O índice oficial de inflação do Brasil, medido pelo IBGE. Acompanha os preços de
+      uma cesta de consumo das famílias com renda de 1 a 40 salários mínimos.
+    por_que_importa: >
+      É o índice da meta de inflação que o BC precisa cumprir (3% ao ano, com tolerância
+      de 1,5 ponto para cima ou para baixo). Também corrige títulos como o Tesouro IPCA+.
+    como_ler: >
+      O mês isolado oscila muito. O número que importa é o acumulado em 12 meses, que
+      vamos calcular na camada gold e comparar com a meta.
+    se_relaciona_com: [selic_meta, dolar, igpm]
+
+  - id: igpm
+    nome: IGP-M (variação mensal)
+    fonte: sgs
+    cod_fonte: 189
+    fonte_original: FGV
+    area: inflacao
+    unidade: "% no mês"
+    periodicidade: mensal
+    o_que_e: >
+      O Índice Geral de Preços do Mercado, da FGV. Mistura preços ao produtor (60%), ao
+      consumidor (30%) e da construção civil (10%).
+    por_que_importa: >
+      Historicamente corrige aluguéis e contratos. Como pesa muito o atacado (commodities,
+      matérias-primas), costuma antecipar pressões que depois chegam ao IPCA.
+    como_ler: >
+      É bem mais volátil que o IPCA e sensível ao dólar e às commodities. Pode até ser
+      negativo (deflação no atacado).
+    se_relaciona_com: [ipca, dolar]
+
+  # ---------------- Câmbio e setor externo ----------------
+  - id: dolar
+    nome: Dólar (venda)
+    fonte: sgs
+    cod_fonte: 1
+    area: cambio_externo
+    unidade: "R$ por US$"
+    periodicidade: diaria
+    o_que_e: >
+      A cotação de venda do dólar americano no mercado de câmbio livre, divulgada pelo BC.
+    por_que_importa: >
+      O dólar alto encarece importados, combustíveis e alimentos cotados em dólar, o que
+      pressiona a inflação. Por outro lado, ajuda os exportadores.
+    como_ler: >
+      Subir = real mais fraco. Costuma subir com incerteza fiscal ou política no Brasil e
+      com juros altos nos EUA.
+    se_relaciona_com: [ipca, igpm, selic_meta, reservas]
+
+  - id: reservas
+    nome: Reservas internacionais
+    fonte: sgs
+    cod_fonte: 13621
+    area: cambio_externo
+    unidade: "US$ milhões"
+    periodicidade: diaria
+    o_que_e: >
+      Os ativos em moeda estrangeira, principalmente títulos do Tesouro americano, que o
+      BC mantém guardados.
+    por_que_importa: >
+      É o "colchão" do país contra crises externas: o BC pode vender dólares para conter
+      uma disparada do câmbio.
+    como_ler: >
+      Reservas altas, como hoje (mais de US$ 300 bilhões), reduzem o risco de crise
+      cambial. Quedas rápidas indicam que o BC está intervindo no câmbio.
+    se_relaciona_com: [dolar, balanca]
+
+  - id: balanca
+    nome: Balança comercial (saldo)
+    fonte: sgs
+    cod_fonte: 22707
+    area: cambio_externo
+    unidade: "US$ milhões"
+    periodicidade: mensal
+    o_que_e: >
+      Exportações menos importações de bens no mês, pelo conceito do balanço de pagamentos.
+    por_que_importa: >
+      Um saldo positivo traz dólares para o país. O Brasil costuma ter superávit graças às
+      commodities (soja, petróleo, minério de ferro).
+    como_ler: >
+      Positivo = superávit. É sazonal: a safra de soja deixa o 1º semestre mais forte.
+    se_relaciona_com: [dolar, reservas]
+
+  # ---------------- Atividade econômica ----------------
+  - id: ibc_br
+    nome: IBC-Br (sem ajuste sazonal)
+    fonte: sgs
+    cod_fonte: 24363
+    area: atividade
+    unidade: "índice (2002=100)"
+    periodicidade: mensal
+    o_que_e: >
+      O Índice de Atividade Econômica do BC, conhecido como a "prévia mensal do PIB".
+    por_que_importa: >
+      O PIB oficial sai só a cada trimestre e com atraso. O IBC-Br dá uma leitura mês a mês
+      do ritmo da economia.
+    como_ler: >
+      Sem ajuste sazonal: compare cada mês com o mesmo mês do ano anterior. Para comparar
+      um mês com o anterior, use a versão dessazonalizada.
+    se_relaciona_com: [ibc_br_dessaz, pib_mensal, desocupacao]
+
+  - id: ibc_br_dessaz
+    nome: IBC-Br (dessazonalizado)
+    fonte: sgs
+    cod_fonte: 24364
+    area: atividade
+    unidade: "índice (2002=100)"
+    periodicidade: mensal
+    o_que_e: >
+      O mesmo IBC-Br, mas sem os efeitos de calendário e sazonalidade (feriados, safra,
+      Natal).
+    por_que_importa: >
+      Permite dizer "a economia cresceu ou encolheu em relação ao mês passado".
+    como_ler: >
+      Duas quedas seguidas no trimestre são um sinal (informal) de recessão técnica.
+    se_relaciona_com: [ibc_br, selic_meta]
+
+  - id: pib_mensal
+    nome: PIB mensal (valores correntes)
+    fonte: sgs
+    cod_fonte: 4380
+    area: atividade
+    unidade: "R$ milhões"
+    periodicidade: mensal
+    o_que_e: >
+      A estimativa mensal do BC para o PIB em reais correntes, ou seja, sem descontar a
+      inflação.
+    por_que_importa: >
+      É o denominador de vários indicadores "% do PIB" (dívida, déficit) e mostra o
+      tamanho da economia.
+    como_ler: >
+      Por estar em valores correntes, cresce também por causa da inflação. Para medir o
+      crescimento real, use o IBC-Br ou o PIB do IBGE (a partir da semana 2).
+    se_relaciona_com: [ibc_br, dbgg]
+
+  # ---------------- Emprego e renda ----------------
+  - id: desocupacao
+    nome: Taxa de desocupação (PNAD Contínua)
+    fonte: sgs
+    cod_fonte: 24369
+    fonte_original: IBGE
+    area: emprego
+    unidade: "%"
+    periodicidade: mensal
+    o_que_e: >
+      A porcentagem da força de trabalho (quem trabalha ou procura trabalho) que está
+      procurando emprego e não encontra. Média móvel de 3 meses.
+    por_que_importa: >
+      Mede a saúde do mercado de trabalho. Desemprego muito baixo pode pressionar salários
+      e, com isso, a inflação de serviços.
+    como_ler: >
+      Cair = mercado de trabalho aquecido. Os valores recentes, em torno de 5% a 6%, estão
+      entre os menores da série, que começa em 2012.
+    se_relaciona_com: [ipca, selic_meta, ibc_br]
+
+  # ---------------- Contas públicas ----------------
+  - id: dbgg
+    nome: Dívida bruta do governo geral
+    fonte: sgs
+    cod_fonte: 13762
+    area: fiscal
+    unidade: "% do PIB"
+    periodicidade: mensal
+    o_que_e: >
+      Tudo o que o governo (União, estados e municípios) deve, sem descontar o que tem a
+      receber. Metodologia usada a partir de 2008.
+    por_que_importa: >
+      É a métrica de endividamento mais usada nas comparações internacionais. Uma dívida
+      crescente aumenta o risco percebido, os juros e a pressão sobre o dólar.
+    como_ler: >
+      Subir = piora fiscal. A trajetória importa mais que o nível: o mercado pergunta se
+      a dívida vai se estabilizar.
+    se_relaciona_com: [dlsp, selic_meta, dolar]
+
+  - id: dlsp
+    nome: Dívida líquida do setor público
+    fonte: sgs
+    cod_fonte: 4513
+    area: fiscal
+    unidade: "% do PIB"
+    periodicidade: mensal
+    o_que_e: >
+      A dívida do setor público (incluindo o BC e as estatais) menos os ativos, como as
+      reservas internacionais.
+    por_que_importa: >
+      Mostra o endividamento "de verdade" descontado o que o governo tem guardado.
+    como_ler: >
+      Quando o dólar sobe, ela pode cair, porque as reservas em dólar valem mais em reais.
+    se_relaciona_com: [dbgg, reservas, dolar]
+
+  # ---------------- Crédito ----------------
+  - id: credito_saldo
+    nome: Saldo da carteira de crédito
+    fonte: sgs
+    cod_fonte: 20539
+    area: credito
+    unidade: "R$ milhões"
+    periodicidade: mensal
+    o_que_e: >
+      O total emprestado pelo sistema financeiro a famílias e empresas.
+    por_que_importa: >
+      O crédito é o principal canal pelo qual a Selic chega à economia real.
+    como_ler: >
+      Olhe o crescimento em 12 meses. Ele desacelera quando a Selic está alta (com
+      defasagem).
+    se_relaciona_com: [selic_meta, inadimplencia]
+
+  - id: inadimplencia
+    nome: Inadimplência da carteira de crédito
+    fonte: sgs
+    cod_fonte: 21082
+    area: credito
+    unidade: "%"
+    periodicidade: mensal
+    o_que_e: >
+      A porcentagem do saldo de crédito com parcelas atrasadas há mais de 90 dias.
+    por_que_importa: >
+      Mede o "aperto" no bolso de famílias e empresas e o risco para os bancos.
+    como_ler: >
+      Costuma subir alguns meses depois de altas da Selic e de aumentos do desemprego.
+    se_relaciona_com: [credito_saldo, selic_meta, desocupacao]

@@ -1,0 +1,33 @@
+# Metas de inflação (IPCA) definidas pelo Conselho Monetário Nacional (CMN).
+# meta e tolerancia em pontos percentuais; o intervalo vai de meta - tolerancia a meta + tolerancia.
+# Desde 2025 a meta é "contínua": 3% medidos no acumulado em 12 meses de qualquer mês, não só em dezembro.
+# 2003: meta ajustada pelo BC na época (a meta original do CMN era 3,25%).
+metas:
+  - {ano: 2000, meta: 6.00, tolerancia: 2.0}
+  - {ano: 2001, meta: 4.00, tolerancia: 2.0}
+  - {ano: 2002, meta: 3.50, tolerancia: 2.0}
+  - {ano: 2003, meta: 4.00, tolerancia: 2.5}
+  - {ano: 2004, meta: 5.50, tolerancia: 2.5}
+  - {ano: 2005, meta: 4.50, tolerancia: 2.5}
+  - {ano: 2006, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2007, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2008, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2009, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2010, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2011, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2012, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2013, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2014, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2015, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2016, meta: 4.50, tolerancia: 2.0}
+  - {ano: 2017, meta: 4.50, tolerancia: 1.5}
+  - {ano: 2018, meta: 4.50, tolerancia: 1.5}
+  - {ano: 2019, meta: 4.25, tolerancia: 1.5}
+  - {ano: 2020, meta: 4.00, tolerancia: 1.5}
+  - {ano: 2021, meta: 3.75, tolerancia: 1.5}
+  - {ano: 2022, meta: 3.50, tolerancia: 1.5}
+  - {ano: 2023, meta: 3.25, tolerancia: 1.5}
+  - {ano: 2024, meta: 3.00, tolerancia: 1.5}
+  - {ano: 2025, meta: 3.00, tolerancia: 1.5}
+  - {ano: 2026, meta: 3.00, tolerancia: 1.5}
+  - {ano: 2027, meta: 3.00, tolerancia: 1.5}
